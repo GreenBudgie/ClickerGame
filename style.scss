@@ -26,24 +26,28 @@ body {
 
 }
 
+@mixin button-size($ratio) {
+    width: $button-size / $ratio;
+    height: $button-size / $ratio;
+    border-radius: $button-size / $ratio;
+    font-size: 72px / $ratio;
+}
+
 #center-wrapper {
 
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: $button-size + 128;
+    margin-top: 2em;
 
     #button {
         color: rgb(128, 128, 128);
         font-family: 'Roboto', sans-serif;
         text-transform: uppercase;
-        font-size: 72px;
         background-color: rgb(71, 71, 71);
-        width: $button-size;
-        height: $button-size;
         border: 16px dashed rgb(54, 54, 54);
-        border-radius: $button-size;
+        outline: none;
 
         box-shadow: 10px 10px 8px 0px rgba(40, 40, 40, 0.4);
 
@@ -56,5 +60,73 @@ body {
             background-color: rgb(77, 77, 77);
             box-shadow: 7px 7px 6px 0px rgba(40, 40, 40, 0.4);
         }
+
     }
+}
+
+#info-wrapper {
+
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;
+    margin-top: 1em;
+
+    h3, p {
+        text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+        color: #BEBEBE;
+        padding: 0;
+        margin: 0;
+    }
+
+    h3 {
+        margin-top: 1em;
+        font-size: 24px;
+
+    }
+
+    #record-counter, #average-counter  {
+        margin-top: 0.25em;
+        font-size: 48px;
+    }
+
+    #record-text, #average-text {
+        color: #a5a5a5;
+        margin-top: 0.6em;
+        font-size: 14px;
+    }
+
+}
+
+@media(min-width: 700px) {
+
+    #button {
+        @include button-size(1);
+    }
+
+}
+
+@media(max-width: 700px) {
+
+    #button {
+        @include button-size(1.2);
+    }
+
+}
+
+@media(max-width: 450px) {
+
+    #button {
+        @include button-size(1.5);
+    }
+
+}
+
+@media(max-width: 350px) {
+
+    #button {
+        @include button-size(1.7);
+    }
+
 }
