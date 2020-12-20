@@ -1,8 +1,10 @@
-const MAX_TIME = 1000 * 10;
+const SECONDS = 10;
+const MAX_TIME = 1000 * SECONDS;
 let clicks = 0;
 let clicking = false;
 
-let record = 0, prevCLicks = 0, overallAverage = 0, perSecondAverage = 0;
+let record = 0, prevClicks = 0, overallAverage = 0, perSecondAverage = 0;
+let clicksInSecond = [];
 
 let time, responseTime, secondPassTime;
 
@@ -30,8 +32,11 @@ function formatTime() {
 }
 
 function stopClicking() {
+    updateRecord();
     clicking = false;
+    prevClicks = 0;
     clicks = 0;
+    clicksInSecond = [];
     updateButton();
     updateTimeLabel();
 }
@@ -45,17 +50,29 @@ function getSecondsPassed() {
 }
 
 function updateAverage() {
-    let clicksCurrentSecond = clicks - prevCLicks;
-    if(perSecondAverage == 0) {
-        overallAverage == clicksCurrentSecond;
+    let clicksCurrentSecond = clicks - prevClicks;
+    prevClicks = clicks;
+    clicksInSecond.push(clicksCurrentSecond);
+    if(overallAverage == 0) {
+        overallAverage = clicksCurrentSecond;
     } else {
-        
+        let sum = 0;
+        for(let item of clicksInSecond) {
+            sum += item;
+        }
+        overallAverage = sum / clicksInSecond.length;
     }
-    $('#average-counter').text('0');
+    $('#average-counter').text(Math.round(overallAverage));
+}
+
+function updateRecord() {
+    if(clicks > record) {
+        record = clicks;
+        $('#record-counter').text(record);
+    }
 }
 
 function timerCount() {
-    console.log(getSecondsPassed());
     time.setTime(responseTime - Date.now());
     if(secondPassTime - Date.now() <= 0) {
         updateAverage();
@@ -77,6 +94,7 @@ function startClicking() {
     clicking = true;
     time = new Date();
     responseTime = new Date(Date.now() + MAX_TIME);
+    overallAverage = 0;
     updateSecondPassTime();
     timerCount();
 }
